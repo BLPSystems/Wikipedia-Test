@@ -28,8 +28,14 @@ async function extractText(buffer: ArrayBuffer, fileType: string): Promise<strin
   }
   if (fileType === "docx") {
     const mammoth = await import("npm:mammoth@1.8.0");
-    const mod = mammoth.default ?? mammoth;
-    const result = await mod.extractRawValue({ arrayBuffer: buffer });
+    const extractFn =
+      mammoth.extractRawValue ??
+      mammoth.default?.extractRawValue ??
+      mammoth["extractRawValue"];
+    if (typeof extractFn !== "function") {
+      throw new Error(`mammoth loaded but extractRawValue not found. Keys: ${Object.keys(mammoth).join(", ")}`);
+    }
+    const result = await extractFn({ arrayBuffer: buffer });
     return result.value;
   }
   throw new Error(`Unsupported file type: ${fileType}`);
