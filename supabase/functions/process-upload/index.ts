@@ -55,7 +55,7 @@ async function callClaude(text: string): Promise<{
       "anthropic-version": "2023-06-01",
     },
     body: JSON.stringify({
-      model: "claude-sonnet-4-6-20251101",
+      model: "claude-sonnet-4-5",
       max_tokens: 8000,
       system: "You are a technical documentation specialist. Convert raw document text into a structured wiki article. Return ONLY valid JSON with no markdown code fences and no explanation text outside the JSON.",
       messages: [
