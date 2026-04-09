@@ -23,12 +23,14 @@ async function extractText(buffer: ArrayBuffer, fileType: string): Promise<strin
   }
   if (fileType === "pdf") {
     const pdfParse = await import("npm:pdf-parse@1.1.1");
-    const result = await pdfParse.default(Buffer.from(buffer));
+    const uint8 = new Uint8Array(buffer);
+    const result = await pdfParse.default(uint8);
     return result.text;
   }
   if (fileType === "docx") {
     const mammoth = await import("npm:mammoth@1.8.0");
-    const result = await mammoth.extractRawText({ arrayBuffer: buffer });
+    const uint8 = new Uint8Array(buffer);
+    const result = await mammoth.extractRawText({ buffer: uint8 });
     return result.value;
   }
   throw new Error(`Unsupported file type: ${fileType}`);
